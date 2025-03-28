@@ -1,13 +1,18 @@
-# Auto detect text files and ensure they have LF line endings on checkout
+# Auto detect text files and ensure they have LF line endings on checkout in Linux/macOS
 * text=auto eol=lf
 
-# Explicitly force LF for script files
+# Explicitly force LF for script files likely used on Linux/macOS runners
 *.sh    eol=lf
 *.bash  eol=lf
-mvnw    eol=lf # Explicitly for mvnw
-mvnw.cmd eol=crlf # Keep cmd files with CRLF
+mvnw    eol=lf
 
-# Ensure specific binary files are treated correctly
+# Explicitly force CRLF for Windows batch files
+*.bat   eol=crlf
+mvnw.cmd eol=crlf
+
+# Ensure specific binary files are treated correctly (prevents corruption)
 *.jar   binary
 *.png   binary
-# Add other binary types as needed
+*.jpg   binary
+*.gif   binary
+# Add other binary types if you have them
