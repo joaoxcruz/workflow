@@ -1,49 +1,71 @@
-name: Java CI with Maven
+# FILENAME: .github/workflows/maven.yml
+
+name: Java CI with Maven # Or whatever name you had previously
 
 on:
   push:
-    branches: [ main ] # Trigger on pushes to the main branch
+    branches: [ main ] # Adjust branches if needed
   pull_request:
-    branches: [ main ] # Trigger on pull requests targeting the main branch
+    branches: [ main ] # Adjust branches if needed
 
 jobs:
-  build:
-    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+  build: # Or whatever your job ID was
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4 # Checks out your code
+      uses: actions/checkout@v4
 
     - name: Set up JDK 11
       uses: actions/setup-java@v4
       with:
-        java-version: '11'        # Specify Java 11, matching your pom.xml
-        distribution: 'temurin'   # Use Eclipse Temurin distribution (a popular choice)
-        cache: maven              # Enable caching for Maven dependencies
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
 
-    - name: Make Maven wrapper executable
-      run: chmod +x mvnw          # Grant execute permission to the wrapper script on Linux
+    # --- START DIAGNOSTICS ---
+    - name: 1. Check Initial Filesystem State
+      id: check_initial # Give the step an ID
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "Listing all files in current directory:"
+        ls -la
+        echo "Checking if mvnw exists:"
+        if [ -f "mvnw" ]; then
+           echo "mvnw file found."
+           echo "mvnw_found=true" >> $GITHUB_OUTPUT # Set output variable
+        else
+           echo "mvnw file NOT found."
+           echo "mvnw_found=false" >> $GITHUB_OUTPUT # Set output variable
+        fi
+        echo "--- End Step 1 ---"
+
+    - name: 2. Check mvnw File Details (if found)
+      # Run this step only if the 'mvnw_found' output from the previous step was 'true'
+      if: steps.check_initial.outputs.mvnw_found == 'true'
+      run: |
+        echo "Checking file type and first line of mvnw:"
+        file mvnw
+        echo "First line bytes (checking for hidden characters like CR '\\r'):"
+        head -n 1 mvnw | od -c
+        echo "--- End Step 2 ---"
+
+    - name: 3. Attempt to Make Maven wrapper executable (if found)
+      if: steps.check_initial.outputs.mvnw_found == 'true'
+      id: chmod_step
+      run: |
+        echo "Attempting chmod +x mvnw..."
+        chmod +x mvnw
+        echo "chmod exit code: $?"
+        echo "--- End Step 3 ---"
+
+    - name: 4. Check Filesystem State After chmod
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "Listing all files after attempting chmod:"
+        ls -la
+        echo "--- End Step 4 ---"
+    # --- END DIAGNOSTICS ---
 
     - name: Build and Test with Maven
-      # Run 'verify' which compiles, runs tests, packages, and runs integration tests/checks
-      # -B runs in batch mode (non-interactive)
       run: ./mvnw -B verify
-
-    # Optional: Upload JaCoCo coverage reports
-    # - name: Upload coverage reports to Codecov
-    #   uses: codecov/codecov-action@v3
-    #   with:
-    #     # token: ${{ secrets.CODECOV_TOKEN }} # If needed for private repos or specific setup
-    #     files: ./shodrone.util.ci/target/site/jacoco-aggregate/jacoco.xml # Path to the aggregated report
-    #     fail_ci_if_error: true
-    #     verbose: true
-
-    # Optional: Upload build artifacts (e.g., JARs) - uncomment if needed
-    # - name: Upload JAR Artifacts
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: shodrone-jars
-    #     path: |
-    #       **/target/*.jar
-    #       !**/target/*-sources.jar
-    #       !**/target/*-javadoc.jar
