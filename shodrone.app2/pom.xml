@@ -7,19 +7,22 @@
         <groupId>lapr4</groupId>
         <artifactId>shodrone</artifactId>
         <version>0.1.0</version>
+        <!-- <relativePath>../pom.xml</relativePath> -->
     </parent>
 
-    <groupId>lapr4</groupId>
+    <!-- groupId is inherited -->
     <artifactId>shodrone.app2</artifactId>
     <packaging>jar</packaging>
 
-    <name>jobs4u.app2</name>
+    <!-- Corrected name to match artifactId pattern -->
+    <name>shodrone.app2</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
-    <dependencies>
-    </dependencies>
+    <!-- Dependencies inherited from parent -->
+    <!-- <dependencies> </dependencies> -->
+
 </project>

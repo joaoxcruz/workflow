@@ -7,19 +7,28 @@
         <groupId>lapr4</groupId>
         <artifactId>shodrone</artifactId>
         <version>0.1.0</version>
+        <!-- Optional: Add relative path if modules are not in direct subdirectories -->
+        <!-- <relativePath>../pom.xml</relativePath> -->
     </parent>
 
-    <groupId>lapr4</groupId>
+    <!-- groupId is inherited from parent -->
     <artifactId>shodrone.app1</artifactId>
     <packaging>jar</packaging>
 
     <name>shodrone.app1</name>
 
     <properties>
+        <!-- Encodings are often inherited, but explicit is fine -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
-    <dependencies>
-    </dependencies>
+    <!--
+        Dependencies like JUnit 5 and Hamcrest are now inherited
+        from the parent pom.xml (<dependencies> section).
+        No need to declare them here unless this module needs
+        *additional* specific dependencies.
+    -->
+    <!-- <dependencies> </dependencies> -->
+
 </project>
