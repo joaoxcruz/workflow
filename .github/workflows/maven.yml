@@ -1,15 +1,15 @@
 # FILENAME: .github/workflows/maven.yml
 
-name: Java CI with Maven # Or whatever name you had previously
+name: Java CI with Maven
 
 on:
   push:
-    branches: [ main ] # Adjust branches if needed
+    branches: [ main ]
   pull_request:
-    branches: [ main ] # Adjust branches if needed
+    branches: [ main ]
 
 jobs:
-  build: # Or whatever your job ID was
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,49 +23,23 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    # --- START DIAGNOSTICS ---
-    - name: 1. Check Initial Filesystem State
-      id: check_initial # Give the step an ID
+    # --- FIX LINE ENDINGS and PERMISSIONS ---
+    - name: Ensure mvnw has LF endings and is executable
       run: |
-        echo "Current directory: $(pwd)"
-        echo "Listing all files in current directory:"
-        ls -la
-        echo "Checking if mvnw exists:"
-        if [ -f "mvnw" ]; then
-           echo "mvnw file found."
-           echo "mvnw_found=true" >> $GITHUB_OUTPUT # Set output variable
-        else
-           echo "mvnw file NOT found."
-           echo "mvnw_found=false" >> $GITHUB_OUTPUT # Set output variable
+        # Check if dos2unix is available, install if not (usually is)
+        if ! command -v dos2unix &> /dev/null; then
+           echo "dos2unix not found, attempting to install..."
+           sudo apt-get update && sudo apt-get install -y dos2unix
         fi
-        echo "--- End Step 1 ---"
-
-    - name: 2. Check mvnw File Details (if found)
-      # Run this step only if the 'mvnw_found' output from the previous step was 'true'
-      if: steps.check_initial.outputs.mvnw_found == 'true'
-      run: |
-        echo "Checking file type and first line of mvnw:"
-        file mvnw
-        echo "First line bytes (checking for hidden characters like CR '\\r'):"
-        head -n 1 mvnw | od -c
-        echo "--- End Step 2 ---"
-
-    - name: 3. Attempt to Make Maven wrapper executable (if found)
-      if: steps.check_initial.outputs.mvnw_found == 'true'
-      id: chmod_step
-      run: |
-        echo "Attempting chmod +x mvnw..."
+        echo "Converting mvnw line endings to LF..."
+        dos2unix mvnw
+        echo "Setting execute permission on mvnw..."
         chmod +x mvnw
-        echo "chmod exit code: $?"
-        echo "--- End Step 3 ---"
+        echo "Verifying file type and permissions:"
+        file mvnw
+        ls -la mvnw
 
-    - name: 4. Check Filesystem State After chmod
-      run: |
-        echo "Current directory: $(pwd)"
-        echo "Listing all files after attempting chmod:"
-        ls -la
-        echo "--- End Step 4 ---"
-    # --- END DIAGNOSTICS ---
+    # --- Diagnostics Removed (or keep them if you prefer) ---
 
     - name: Build and Test with Maven
-      run: ./mvnw -B verify
+      run: ./mvnw -B verify # This should now work
