@@ -8,50 +8,39 @@
         <groupId>lapr4</groupId>
         <artifactId>shodrone</artifactId>
         <version>0.1.0</version>
-        <!-- Relative path helps Maven find the parent if needed -->
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <!-- groupId adjusted to be more specific, inheriting parent's base -->
     <groupId>lapr4.shodrone.util</groupId>
     <artifactId>shodrone.util.ci</artifactId>
-    <packaging>pom</packaging> <!-- Packaging is POM for aggregation -->
+    <packaging>pom</packaging>
 
     <name>shodrone.util.ci</name>
     <description>Shodrone CI Utilities and Aggregation</description>
 
     <properties>
         <!-- Redefine relative paths based on this module's location -->
-        <code.coverage.project.folder>${project.parent.basedir}</code.coverage.project.folder>
+        <!-- Note: code.coverage.project.folder is no longer used directly in fileset -->
         <code.coverage.overall.data.folder>${project.build.directory}</code.coverage.overall.data.folder>
         <aggregate.report.dir>${project.build.directory}/site/jacoco-aggregate</aggregate.report.dir>
     </properties>
 
     <dependencies>
-        <!-- Depend on the modules to aggregate reports from -->
         <dependency>
-            <!-- Use parent's groupId -->
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>shodrone.app1</artifactId>
-            <!-- Version managed by parent -->
         </dependency>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>shodrone.app2</artifactId>
-             <!-- Version managed by parent -->
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-             <!-- This module doesn't compile code, so compiler plugin isn't needed here -->
-             <!-- Surefire plugin is also likely not needed here unless this module has tests -->
-
-            <!-- Jacoco for aggregation -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <!-- Version inherited from parent's pluginManagement -->
                 <executions>
                     <execution>
                         <id>merge-results</id>
@@ -62,20 +51,28 @@
                         <configuration>
                             <fileSets>
                                 <fileSet>
-                                    <!-- Look in the parent directory for modules -->
-                                    <directory>${code.coverage.project.folder}</directory>
+                                    <!-- START CHANGE HERE -->
+                                    <!-- Look relative to this module's base directory -->
+                                    <!-- Go up one level to the parent directory -->
+                                    <directory>..</directory>
+                                    <!-- END CHANGE HERE -->
                                     <includes>
-                                        <!-- Find jacoco.exec in each module's target -->
+                                        <!-- Find jacoco.exec in sibling module target dirs -->
+                                        <!-- Matches ../shodrone.app1/target/jacoco.exec -->
+                                        <!-- Matches ../shodrone.app2/target/jacoco.exec -->
                                         <include>*/target/jacoco.exec</include>
                                     </includes>
                                     <excludes>
-                                        <!-- Exclude this module's target if it exists -->
+                                        <!-- Exclude this module's target -->
+                                        <!-- Matches ../shodrone.util.ci/target/jacoco.exec (relative path) -->
                                         <exclude>shodrone.util.ci/target/jacoco.exec</exclude>
+                                        <!-- Or more robustly using artifactId -->
+                                        <!-- <exclude>${project.artifactId}/target/jacoco.exec</exclude> -->
                                     </excludes>
                                 </fileSet>
                             </fileSets>
-                            <!-- Destination for the merged file -->
-                            <destFile>${code.coverage.overall.data.folder}/aggregate.exec</destFile>
+                            <!-- Destination for the merged file (relative to this module's target) -->
+                            <destFile>${project.build.directory}/aggregate.exec</destFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -85,27 +82,14 @@
                             <goal>report-aggregate</goal>
                         </goals>
                          <configuration>
-                             <!-- Use the merged data file -->
-                             <dataFile>${code.coverage.overall.data.folder}/aggregate.exec</dataFile>
+                             <!-- Use the merged data file generated by the merge goal -->
+                             <dataFile>${project.build.directory}/aggregate.exec</dataFile>
                              <!-- Specify output directory for the HTML report -->
                              <outputDirectory>${aggregate.report.dir}</outputDirectory>
                          </configuration>
                     </execution>
                 </executions>
             </plugin>
-
-             <!-- Remove Surefire override unless this module has specific test needs -->
-             <!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                 <configuration>
-                    <argLine>@{argLine} -Xms256m -Xmx2048m</argLine> -->
-                    <!-- Use @{argLine} to include Jacoco agent -->
-                 <!--   <forkCount>1</forkCount>
-                    <runOrder>random</runOrder>
-                 </configuration>
-             </plugin> -->
-
         </plugins>
     </build>
 
