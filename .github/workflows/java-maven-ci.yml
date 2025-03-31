@@ -15,21 +15,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 11
+      - name: Set up JDK 11 and Maven
         uses: actions/setup-java@v4
         with:
           java-version: '11'
           distribution: 'temurin'
-          cache: 'maven'
+          cache: 'maven' # This caches Maven dependencies, not Maven itself
 
-      # --- ADD THIS STEP ---
-      - name: Grant execute permission for mvnw
-        run: chmod +x ./mvnw
-      # --- END OF ADDED STEP ---
+      # The chmod +x ./mvnw step is REMOVED
 
-      - name: Build, Test, and Verify with Maven Wrapper
-        # Now this step should have permission to execute ./mvnw
-        run: ./mvnw -B verify
+      - name: Build, Test, and Verify with Maven
+        # Use the 'mvn' command directly, provided by setup-java
+        run: mvn -B verify
 
       - name: Upload Unit Test Results (Surefire)
         if: always()
