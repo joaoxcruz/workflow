@@ -9,8 +9,7 @@
         <version>0.1.0</version>
     </parent>
 
-    <!-- Correct groupId if needed -->
-    <!-- <groupId>lapr4</groupId> -->
+
     <artifactId>shodrone.app2</artifactId>
     <packaging>jar</packaging>
 
