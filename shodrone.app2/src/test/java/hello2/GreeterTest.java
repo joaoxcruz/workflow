@@ -1,20 +1,22 @@
 package hello2;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.*;
+// Import JUnit 5 annotations and assertions
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Test;
 
 /**
-	A comment
-*/
+ * A comment
+ */
 public class GreeterTest {
-	
-	private Greeter greeter = new Greeter();
 
-	@Test
-	public void greeterSaysHello() {
-		assertThat(greeter.sayHello(), containsString("Hello"));
-	}
+    private final Greeter greeter = new Greeter(); // Can be final
 
+    @Test // Use JUnit 5 @Test
+    void greeterSaysHello() { // Test methods don't need to be public in JUnit 5
+        String result = greeter.sayHello();
+        assertNotNull(result, "Greeting should not be null"); // Example assertion
+        assertTrue(result.contains("Hello"), "Greeting should contain 'Hello'"); // Junit 5 assertion
+        // assertEquals("Hello world!", result); // If the test logic was changed from original example
+    }
 }

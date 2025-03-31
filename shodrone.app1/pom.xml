@@ -9,17 +9,48 @@
         <version>0.1.0</version>
     </parent>
 
-    <groupId>lapr4</groupId>
+    <!-- Correct groupId if needed, often inherits parent's group -->
+    <!-- <groupId>lapr4</groupId> -->
     <artifactId>shodrone.app1</artifactId>
     <packaging>jar</packaging>
 
     <name>shodrone.app1</name>
+    <description>Shodrone Application 1</description> <!-- Added description -->
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>
+    <!-- No properties needed here unless specific to this module -->
 
     <dependencies>
+        <!-- Add dependencies specific to this module -->
+        <!-- Versions are managed by the parent POM -->
+
+        <!-- Example: If this app uses Lombok -->
+         <dependency>
+             <groupId>org.projectlombok</groupId>
+             <artifactId>lombok</artifactId>
+         </dependency>
+
+        <!-- Testing Dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <!-- scope and version managed by parent -->
+        </dependency>
+         <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+             <!-- scope and version managed by parent -->
+        </dependency>
+         <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+             <!-- scope and version managed by parent -->
+        </dependency>
     </dependencies>
+
+    <!-- No specific build config needed unless overriding parent -->
+    <!-- <build> -->
+    <!--   <plugins> -->
+    <!--     ... -->
+    <!--   </plugins> -->
+    <!-- </build> -->
 </project>
