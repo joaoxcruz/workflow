@@ -1,0 +1,198 @@
+@startuml
+' Domain Model for Drone Show Management System - Visual Enhancements
+
+skinparam handwritten false
+skinparam shadowing false
+skinparam roundcorner 10
+skinparam class {
+    BackgroundColor PaleTurquoise
+    ArrowColor Navy
+    BorderColor Navy
+    BorderThickness 1
+}
+skinparam note {
+    BackgroundColor LightYellow
+    BorderColor Gray
+}
+skinparam package {
+    BackgroundColor LightSteelBlue
+    BorderColor Navy
+    FontColor Navy
+}
+skinparam enum {
+     BackgroundColor LightGoldenrodYellow
+     BorderColor OrangeRed
+}
+
+
+' --- Grouping using Packages for Visual Organization ---
+
+package "Client & Representation" <<Folder>> {
+    class Client {
+    }
+    class Representative {
+    }
+    class Address{
+        Street : String
+        City : String
+        Country : String
+    }
+    class ZipCode{
+        ZipCode : String
+    }
+    class Name {
+        FirstName : String
+        LastName : String
+    }
+    class Phone {
+        PhoneNumber : String
+    }
+    class Email {
+        EmailAddress : String
+    }
+    class VAT {
+        VATNumber : String
+    }
+}
+
+package "Show & Design" <<Folder>> {
+    class ShowRequest {
+        NumberOfDrones : Integer
+    }
+    class Show {
+    }
+    class Figure {
+        IsExclusive : Boolean
+    }
+    class ShowProposal {
+    }
+    class Template {
+    }
+    class Routine {
+    }
+    class KeyWord {
+        KeyWord : String
+    }
+    class Category{
+        Category : String
+    }
+     class Description{
+        Description : String
+    }
+    class Date{
+        Date : String
+    }
+     class Version {
+    }
+     class Duration {
+        Time : Time
+    }
+    class Place {
+        PlaceName : String
+    }
+    class Catalogue{
+        Category : String
+    }
+}
+
+package "Drone & Maintenance" <<Folder>> {
+    class Drone {
+    }
+    class Model{
+        ModelName : String
+    }
+    class SerialNumber{
+        SerialNumber : String
+    }
+    class Inventory {
+        Quantity : Integer
+    }
+    class Maintenance{
+    }
+    class History{
+    }
+}
+
+package "Supporting Types" <<Folder>> {
+     enum Status {
+        ACTIVE
+        INACTIVE
+        VIP
+        REGULAR
+        DELETED
+        INFRINGEMENT
+        CREATED
+    }
+}
+
+
+' --- Relationships (Exactly as provided) ---
+Client "1" -- "1..*" Representative : represented by >
+Client "1" -- "1..*" ShowRequest : requests >
+Client "1" -- "1..*" Show : asks for >
+Client "1" -- "1" VAT : identified by >
+Client "1" -- "1" Status : has >
+Client "1" -- "1" Address : has >
+Client "1" -- "1" Name : identified by >
+Client "1" -- "1" Phone : has >
+Client "1" -- "1" Email : uses >
+
+Representative "1" -- "1" Name: identified by >
+Representative "1" -- "1" Phone : has >
+Representative "1" -- "1" Email : uses >
+
+ShowRequest "1" -- "1..*" Figure : includes >
+ShowRequest "1" -- "1..*" ShowProposal : generates >
+ShowRequest "1" -- "1" Show : becomes >
+ShowRequest "1" -- "1" Place : specifies >
+ShowRequest "1" -- "1" Duration : specifies >
+ShowRequest "1" -- "1" Description : provides >
+ShowRequest "1" -- "1" Date : specifies >
+
+ShowProposal "1" -- "1..*" Drone : includes >
+ShowProposal "1" -- "1..*" Figure : features >
+
+Show "1" -- "1..*" Figure : displays >
+Show "1" -- "1..*" Drone : utilizes >
+Show "1" -- "1" Duration : has >
+Show "1" -- "1" Place : happens in >
+Show "1" -- "1" Date : has >
+
+Figure "1" -- "1..*" Drone : composed by >
+Figure "1" -- "0..*" Routine : uses >
+Figure "1" -- "1..*" KeyWord : described by >
+Figure "1" -- "1" Category : classified with >
+Figure "1" -- "1..*" Version : has >
+Figure "1" -- "1" Description : has >
+
+Address "1" -- "1" ZipCode : has >
+
+Drone "1" -- "1" Model : represented by >
+Drone "1" -- "1" SerialNumber : identified by >
+Drone "1" -- "0..*" Maintenance : requires >
+
+Maintenance "1" -- "1" Description : must have >
+Maintenance "1" -- "1" Date : must have >
+
+Catalogue "1" -- "1..*" Figure : contains >
+Catalogue "1" -- "1" Description : contains >
+
+Category "1" -- "1" Description : contains >
+
+Place "1" -- "1" Description : contains >
+Place "1" -- "1" Address : has >
+
+Template "1" -- "1" Description : contains >
+Template "1" -- "1" Name : identified by >
+Template "1" -- "0..*" ShowProposal : used by >
+
+Inventory "1" -- "1..*" Drone : contains >
+
+History "1" -- "0..*" Maintenance : composed by >
+
+
+title Drone Show Management System - Domain Model
+
+center footer PlantUML representation of provided Domain Model (Visually Enhanced)
+
+@enduml
