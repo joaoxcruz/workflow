@@ -1,0 +1,26 @@
+@startuml
+
+skinparam actorStyle awesome
+skinparam usecase {
+    BackgroundColor LightBlue
+    BorderColor Black
+    ArrowColor Black
+}
+skinparam rectangle {
+    BorderColor Navy
+    BackgroundColor LightBlue
+}
+
+left to right direction
+
+actor "CRM Manager" as Manager
+actor "CRM Collaborator" as Collaborator
+
+rectangle "Drone Show Management System" {
+  usecase "List Show Requests of Client" as UC235
+}
+
+Manager -- UC235
+Collaborator -- UC235
+
+@enduml

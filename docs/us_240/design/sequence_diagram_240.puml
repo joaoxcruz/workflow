@@ -1,0 +1,61 @@
+@startuml
+title Sequence Diagram: US240 - Create Drone Model (UI Flow)
+
+actor "Drone Tech" as User
+participant "CreateDroneModelUI" as UI
+participant "CreateDroneModelController" as Controller
+participant "DroneModelApplicationService" as Service
+participant "DroneModelFactory" as Factory <<Optional>>
+participant "DroneModelRepository" as Repo
+database "Database" as DB
+participant "DroneModel" as DomainModel <<ER>>
+
+activate User
+User -> UI : submitModelDetails(name, caps, attrs)
+activate UI
+
+UI -> Controller : createDroneModel(dto)
+activate Controller
+
+Controller -> Service : createDroneModel(dto)
+activate Service
+
+Service -> Repo : findByNameIgnoreCase(dto.name)
+activate Repo
+Repo -> DB : query by name
+activate DB
+DB --> Repo : Optional<DroneModel> [empty]
+deactivate DB
+Repo --> Service : Optional.empty()
+deactivate Repo
+
+' Optional Factory Usage
+' Service -> Factory : create(nameVO, capsVO, attrsVO)
+' activate Factory
+' create DomainModel
+' Factory --> Service : droneModel
+' deactivate Factory
+
+Service -> DomainModel ** : create(nameVO, capsVO, attrsVO) ' Direct creation or via factory
+note right : VOs (ModelName, etc.) created from DTO data
+
+Service -> Repo : save(droneModel)
+activate Repo
+Repo -> DB : persist(droneModel)
+activate DB
+DB --> Repo : persistedModel
+deactivate DB
+Repo --> Service : savedDroneModel
+deactivate Repo
+
+Service --> Controller : savedDroneModel
+deactivate Service
+
+Controller --> UI : displaySuccess(savedDroneModel) ' or DTO mapping
+deactivate Controller
+
+UI --> User : showSuccessMessage("Model Created")
+deactivate UI
+
+deactivate User
+@enduml

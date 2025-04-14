@@ -1,0 +1,25 @@
+@startuml US230_RegisterShowRequest_UseCaseDiagram
+
+skinparam actorStyle awesome
+skinparam usecase {
+    BackgroundColor LightBlue
+    BorderColor Black
+    ArrowColor Black
+}
+skinparam rectangle {
+    BorderColor Navy
+    BackgroundColor LightBlue
+}
+
+left to right direction
+
+actor "CRM Collaborator" as CRM
+
+rectangle "Drone Show Management System" {
+  usecase "Register Show Request" as UC230
+}
+
+CRM -- UC230
+
+
+@enduml

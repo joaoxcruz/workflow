@@ -1,0 +1,115 @@
+@startuml
+title Class Diagram: US240 - Create Drone Model
+
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+
+package UI <<Layer>> {
+    class CreateDroneModelUI {
+        - controller: CreateDroneModelController
+        + handleCreateRequest(): void
+    }
+}
+
+package Application <<Layer>> {
+    class CreateDroneModelController <<Controller>> {
+        - service: DroneModelApplicationService
+        + createDroneModel(dto: DroneModelDTO): DroneModelDTO
+    }
+
+    class DroneModelApplicationService <<Service>> {
+        - repository: DroneModelRepository
+        - factory: DroneModelFactory ' Optional
+        + createDroneModel(dto: DroneModelDTO): DroneModel
+    }
+
+     class DroneModelDTO <<DTO>> {
+        + name: String
+        + capabilities: String
+        + attributes: String
+    }
+
+    class DroneModelFactory {
+       + create(name: ModelName, caps: ModelCapabilities, attrs: PhysicalAttributes) : DroneModel
+    }
+}
+
+package Domain <<Layer>> {
+    class DroneModel <<ER, Root>> {
+        - name: ModelName
+        - capabilities: ModelCapabilities
+        - attributes: PhysicalAttributes
+        --
+        + getName(): ModelName
+    }
+
+    class ModelName <<VO>> {
+         - value: String
+         --
+         + getValue(): String
+    }
+
+    class ModelCapabilities <<VO>> {
+         - value: String
+         --
+         + getValue(): String
+    }
+
+     class PhysicalAttributes <<VO>> {
+          - value: String
+          --
+         + getValue(): String
+    }
+}
+
+package Infrastructure <<Layer>> {
+    interface DroneModelRepository <<Repository>> {
+        + save(model: DroneModel): DroneModel
+        + findByNameIgnoreCase(name: String): Optional<DroneModel>
+        + findById(id: UUID): Optional<DroneModel> ' Assuming UUID ID
+        + findAll(): List<DroneModel>
+    }
+
+    class JpaDroneModelRepository implements DroneModelRepository {
+    }
+
+    class DroneModelBootstrapService {
+        - service: DroneModelApplicationService ' or repository directly
+        - configReader: ConfigurationReader
+        + loadModelsOnStartup(): void
+    }
+
+     interface ConfigurationReader {
+        + readModels(): List<DroneModelDTO>
+    }
+
+     class YamlConfigurationReader implements ConfigurationReader {
+     }
+}
+
+' Dependencies
+UI ..> Application
+Application ..> Domain
+Application ..> Infrastructure : uses >
+Infrastructure ..> Domain
+
+CreateDroneModelUI -> CreateDroneModelController
+CreateDroneModelController -> DroneModelApplicationService
+DroneModelApplicationService -> DroneModelRepository
+DroneModelApplicationService ..> DroneModelFactory
+DroneModelApplicationService ..> DroneModelDTO : uses/returns >
+DroneModelApplicationService -> DroneModel : creates >
+DroneModel "1" *--> "1" ModelName
+DroneModel "1" *--> "1" ModelCapabilities
+DroneModel "1" *--> "1" PhysicalAttributes
+
+DroneModelBootstrapService -> DroneModelApplicationService
+DroneModelBootstrapService -> ConfigurationReader
+YamlConfigurationReader ..|> ConfigurationReader
+JpaDroneModelRepository ..|> DroneModelRepository
+
+
+@enduml

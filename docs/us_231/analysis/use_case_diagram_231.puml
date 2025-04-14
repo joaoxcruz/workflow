@@ -1,0 +1,12 @@
+@startuml
+title Use Case Diagram: US231 - List Public Figures
+
+actor "CRM Collaborator" as CRMC
+
+rectangle "Shodrone Backoffice System" {
+    usecase "List Public Figures\nCatalogue" as ListFigures
+}
+
+CRMC -- ListFigures
+
+@enduml

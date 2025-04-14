@@ -1,0 +1,24 @@
+@startuml analysis/system-sequence-diagram_235.svg
+
+title System Sequence Diagram: US235 - List Show Requests of Client
+
+actor "CRM Manager/\nCRM Collaborator" as User
+participant ":System" as System
+
+activate User
+User -> System : initiatesListClientRequests()
+activate System
+
+System --> User : requestsClientSelection(clientList)
+deactivate System
+
+User -> System : selectClient(clientIdentifier)
+activate System
+
+System -> System : retrieveClientShowRequests(clientIdentifier)
+System --> User : displayShowRequests(requestList[details, status])
+deactivate System
+
+deactivate User
+
+@enduml

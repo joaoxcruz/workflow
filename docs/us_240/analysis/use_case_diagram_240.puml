@@ -1,0 +1,27 @@
+
+---
+
+**FILENAME: `docs/us_240/use_case_diagram_240.puml`**
+
+```plantuml
+@startuml
+title Use Case Diagram: US240 - Create Drone Model
+
+left to right direction
+actor "Drone Tech" as DT
+
+rectangle "Shodrone Backoffice System" {
+  usecase "Create Drone Model" as UC_CREATE_MODEL
+  usecase "Load Models via Bootstrap" as UC_BOOTSTRAP
+}
+
+DT -- UC_CREATE_MODEL
+System -- UC_BOOTSTRAP
+
+note right of UC_BOOTSTRAP
+  Triggered during
+  system initialization
+  or setup.
+end note
+
+@enduml

@@ -1,0 +1,104 @@
+@startuml
+title Class Diagram: US231 - List Public Figures
+
+
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    BackgroundColor LightGrey
+    ArrowColor Black
+    BorderColor Black
+    BorderThickness 1
+}
+skinparam note {
+    BackgroundColor LightYellow
+    BorderColor Gray
+}
+skinparam enum {
+     BackgroundColor LightGoldenrodYellow
+     BorderColor OrangeRed
+}
+
+
+class FigureListUI {
+    - controller: FigureListController
+    + displayPublicFigures() : void
+}
+
+class FigureListController <<Controller>> {
+    - figureRepository: FigureRepository
+    + getPublicFigures(): List<FigureListDTO>
+}
+
+interface FigureRepository <<Repository>> {
+    + findAvailablePublicFigures(): List<Figure>
+}
+
+
+class Figure <<ER>> {
+    - description: Description_3
+    - category: Category
+    - type: Type
+    - exclusivity: Set<Exclusivity>
+    -- Methods --
+    + getDescription(): Description_3
+    + getCategory(): Category
+    + getType(): Type
+    + getExclusivity(): Set<Exclusivity>
+    + isPublic(): boolean
+    + isActive(): boolean
+}
+
+class Category <<VO>> {
+    - Category : String
+    + getCategory() : String
+}
+
+class Description <<VO>> {
+    - Description : String
+    + getDescription() : String
+}
+
+enum Type <<VO>> {
+     STATIC
+     DYNAMIC
+}
+
+class Exclusivity <<VO>> {
+    - period: Period
+    + isActive(): boolean
+}
+
+class Period <<VO>> {
+    - StartDate : String
+    - EndDate : String
+    + contains(Date): boolean
+}
+
+class FigureListDTO <<DTO>> {
+    + figureId: String
+    + nameOrDescription: String
+    + categoryName: String
+    + figureType: String
+}
+
+
+' --- Relationships with Cardinalities ---
+FigureListUI "1" -> "1" FigureListController : uses >
+FigureListController "1" ..> "1" FigureRepository : repositories >
+FigureListController "1" ...> "0..*" FigureListDTO : creates >
+FigureRepository "1" ..> "0..*" Figure : manages >
+
+Figure "1" --> "1" Description : has >
+Figure "1" --> "1" Category : has >
+Figure "1" --> "1" Type : has >
+Figure "1" --> "0..*" Exclusivity : has >
+Exclusivity "1" --> "1" Period : periods >
+
+
+
+@enduml
