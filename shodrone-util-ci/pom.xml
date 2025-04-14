@@ -39,21 +39,6 @@
             <artifactId>shodrone-backoffice-db</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>lapr4</groupId>
-            <artifactId>shodrone-plugin-dsl</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>lapr4</groupId>
-            <artifactId>shodrone-plugin-dronelang</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>lapr4</groupId>
-            <artifactId>shodrone-plugin-showproposal</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 
     <build>

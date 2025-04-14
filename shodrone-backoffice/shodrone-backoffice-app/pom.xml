@@ -21,42 +21,57 @@
         <dependency>
             <groupId>lapr4</groupId>
             <artifactId>shodrone-domain</artifactId>
+            <!-- Version managed by parent -->
         </dependency>
         <dependency>
             <groupId>lapr4</groupId>
             <artifactId>shodrone-backoffice-db</artifactId>
+            <!-- Version managed by parent -->
+        </dependency>
+
+
+        <!-- == ADDED: EAPLI Framework Dependencies == -->
+        <dependency>
+            <groupId>org.bitbucket.pag_isep.eapliframework</groupId>
+            <artifactId>eapli.framework.core</artifactId>
+            <!-- Version is managed by parent POM -->
         </dependency>
         <dependency>
-            <groupId>lapr4</groupId>
-            <artifactId>shodrone-plugin-dsl</artifactId>
+            <groupId>org.bitbucket.pag_isep.eapliframework</groupId>
+            <artifactId>eapli.framework.infrastructure.authz</artifactId>
+            <!-- Version is managed by parent POM -->
+            <!-- This module likely needs authz for login, user management UI/Controllers -->
         </dependency>
         <dependency>
-            <groupId>lapr4</groupId>
-            <artifactId>shodrone-plugin-dronelang</artifactId>
+            <groupId>org.bitbucket.pag_isep.eapliframework</groupId>
+            <artifactId>eapli.framework.infrastructure.pubsub</artifactId>
+            <!-- Version is managed by parent POM -->
+            <!-- Added as requested -->
         </dependency>
-        <dependency>
-            <groupId>lapr4</groupId>
-            <artifactId>shodrone-plugin-showproposal</artifactId>
-        </dependency>
+        <!-- ======================================= -->
 
         <!-- External Dependencies -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Testing Dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

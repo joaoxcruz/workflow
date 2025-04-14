@@ -20,9 +20,6 @@
     <modules>
         <module>shodrone-backoffice-app</module>
         <module>shodrone-backoffice-db</module>
-        <module>shodrone-plugin-dsl</module>
-        <module>shodrone-plugin-dronelang</module>
-        <module>shodrone-plugin-showproposal</module>
     </modules>
 
 </project>

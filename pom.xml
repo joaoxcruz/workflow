@@ -23,7 +23,10 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.release>11</maven.compiler.release>
 
-		<!-- Dependency Versions -->
+		<!-- EAPLI Framework Version -->
+		<eapli.framework.version>25.0.0-RELEASE</eapli.framework.version>
+
+		<!-- Other Dependency Versions -->
 		<junit.jupiter.version>5.10.2</junit.jupiter.version>
 		<jaxb-api.version>2.3.1</jaxb-api.version>
 		<h2.version>2.2.224</h2.version>
@@ -41,6 +44,15 @@
 		<antlr4-maven-plugin.version>4.13.1</antlr4-maven-plugin.version>
 		<build-helper-maven-plugin.version>3.5.0</build-helper-maven-plugin.version>
 	</properties>
+
+	<!-- == ADDED: Repository for EAPLI Framework via JitPack == -->
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+	<!-- ======================================================= -->
 
 	<dependencyManagement>
 		<dependencies>
@@ -75,6 +87,25 @@
 				<artifactId>shodrone-plugin-showproposal</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+
+			<!-- == ADDED: EAPLI Framework Modules == -->
+			<dependency>
+				<!-- Group ID provided by user - verify if correct, might be com.bitbucket... -->
+				<groupId>org.bitbucket.pag_isep.eapliframework</groupId>
+				<artifactId>eapli.framework.core</artifactId>
+				<version>${eapli.framework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.bitbucket.pag_isep.eapliframework</groupId>
+				<artifactId>eapli.framework.infrastructure.authz</artifactId>
+				<version>${eapli.framework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.bitbucket.pag_isep.eapliframework</groupId>
+				<artifactId>eapli.framework.infrastructure.pubsub</artifactId>
+				<version>${eapli.framework.version}</version>
+			</dependency>
+			<!-- ==================================== -->
 
 			<!-- External Dependencies -->
 			<dependency>
