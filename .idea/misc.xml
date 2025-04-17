@@ -7,6 +7,18 @@
         <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/shodrone.app.backoffice.console/pom.xml" />
+        <option value="$PROJECT_DIR$/shodrone.app.bootstrap/pom.xml" />
+        <option value="$PROJECT_DIR$/shodrone.app.common.console/pom.xml" />
+        <option value="$PROJECT_DIR$/shodrone.app.customer.console/pom.xml" />
+        <option value="$PROJECT_DIR$/shodrone.bootstrappers/pom.xml" />
+        <option value="$PROJECT_DIR$/shodrone.core/pom.xml" />
+        <option value="$PROJECT_DIR$/shodrone.infrastructure.application/pom.xml" />
+        <option value="$PROJECT_DIR$/shodrone.persistence.impl/pom.xml" />
+      </set>
+    </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_23" default="true" project-jdk-name="openjdk-23" project-jdk-type="JavaSDK" />
 </project>
